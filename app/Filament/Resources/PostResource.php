@@ -1,4 +1,6 @@
 <?php
+
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PostResource\Pages;
@@ -8,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Table;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 
 class PostResource extends Resource
@@ -33,7 +36,7 @@ class PostResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
@@ -44,13 +47,15 @@ class PostResource extends Resource
                 TextColumn::make('updated_at')->dateTime(),
             ])
             ->filters([
-                // Add your filters here
+                // Add filters here if needed
             ])
             ->actions([
-                // Add your actions here
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                // Add your bulk actions here
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

@@ -1,64 +1,57 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CostCenterResource\Pages;
 use App\Models\CostCenter;
 use Filament\Resources\Resource;
-use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Forms;
+use Filament\Tables;
 
 class CostCenterResource extends Resource
 {
     protected static ?string $model = CostCenter::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cog'; // Choose an appropriate icon
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-
-                TextInput::make('manager')
+                Forms\Components\TextInput::make('manager')
                     ->required()
                     ->maxLength(255),
-
-                TextInput::make('email')
+                Forms\Components\TextInput::make('email')
                     ->required()
                     ->email()
                     ->maxLength(255),
-
-                TextInput::make('department')
+                Forms\Components\TextInput::make('department')
                     ->required()
                     ->maxLength(255),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
-                TextColumn::make('id')->sortable(),
-                TextColumn::make('name')->sortable(),
-                TextColumn::make('manager')->sortable(),
-                TextColumn::make('email')->sortable(),
-                TextColumn::make('department')->sortable(),
-                TextColumn::make('created_at')->dateTime(),
-                TextColumn::make('updated_at')->dateTime(),
-            ])
-            ->filters([
-                // Add any filters you want to apply here
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('name')->sortable(),
+                Tables\Columns\TextColumn::make('manager')->sortable(),
+                Tables\Columns\TextColumn::make('email')->sortable(),
+                Tables\Columns\TextColumn::make('department')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime(),
             ])
             ->actions([
-                // Define actions (e.g., view, edit, delete) if needed
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                // Define bulk actions (e.g., delete) if needed
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

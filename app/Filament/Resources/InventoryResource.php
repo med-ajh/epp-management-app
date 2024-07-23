@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\InventoryResource\Pages;
@@ -11,13 +15,15 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Table;
+use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\Action;
 
 class InventoryResource extends Resource
 {
     protected static ?string $model = Inventory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cube'; // Choose an appropriate icon
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     public static function form(Form $form): Form
     {
@@ -39,9 +45,7 @@ class InventoryResource extends Resource
                     ->required()
                     ->numeric()
                     ->reactive()
-                    ->afterStateUpdated(function ($state, $set) {
-                        $set('status', $state > 0 ? 'Available' : 'Not Available');
-                    }),
+                    ->afterStateUpdated(fn($state, $set) => $set('status', $state > 0 ? 'Available' : 'Not Available')),
 
                 TextInput::make('image')
                     ->nullable()
@@ -54,7 +58,7 @@ class InventoryResource extends Resource
                         'Not Available' => 'Not Available',
                     ])
                     ->reactive()
-                    ->disabled(), // Disable if you want it to be controlled by quantity
+                    ->disabled(),
 
                 Select::make('area_id')
                     ->label('Area')
@@ -62,20 +66,18 @@ class InventoryResource extends Resource
                         Area::all()->pluck('name', 'id')
                     )
                     ->reactive()
-                    ->afterStateUpdated(function ($state, $set) {
-                        $set('post_id', null); // Reset post_id when area_id changes
-                    }),
+                    ->afterStateUpdated(fn($state, $set) => $set('post_id', null)),
 
                 Select::make('post_id')
                     ->label('Post')
-                    ->options(function ($get) {
-                        return Post::where('area_id', $get('area_id'))->pluck('name', 'id');
-                    })
+                    ->options(fn($get) =>
+                        Post::where('area_id', $get('area_id'))->pluck('name', 'id')
+                    )
                     ->nullable(),
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
@@ -87,11 +89,10 @@ class InventoryResource extends Resource
                 TextColumn::make('image')->sortable(),
                 TextColumn::make('status')
                     ->sortable()
-                    ->formatStateUsing(function ($state) {
-                        return $state === 'Available'
-                            ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded">' . $state . '</span>'
-                            : '<span class="bg-red-100 text-red-800 px-2 py-1 rounded">' . $state . '</span>';
-                    })
+                    ->formatStateUsing(fn($state) => $state === 'Available' ?
+                        '<span class="bg-green-100 text-green-800 px-2 py-1 rounded">' . $state . '</span>' :
+                        '<span class="bg-red-100 text-red-800 px-2 py-1 rounded">' . $state . '</span>'
+                    )
                     ->html(),
                 TextColumn::make('area.name')->label('Area'),
                 TextColumn::make('post.name')->label('Post'),
@@ -99,13 +100,15 @@ class InventoryResource extends Resource
                 TextColumn::make('updated_at')->dateTime(),
             ])
             ->filters([
-                // Add any filters you want to apply here
+                // Add filters here if needed
             ])
             ->actions([
-                // Define actions (e.g., view, edit, delete) if needed
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                // Define bulk actions (e.g., delete) if needed
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

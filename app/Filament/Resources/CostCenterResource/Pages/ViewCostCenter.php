@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Filament\Resources\CostCenterResource\Pages;
 
 use App\Filament\Resources\CostCenterResource;
-use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
+use App\Models\CostCenter;
 
-class ViewCostCenter extends EditRecord
+class ViewCostCenter extends ViewRecord
 {
     protected static string $resource = CostCenterResource::class;
-
-
 }

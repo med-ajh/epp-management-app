@@ -1,4 +1,7 @@
 <?php
+
+
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AreaResource\Pages;
@@ -37,6 +40,7 @@ class AreaResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -53,4 +57,5 @@ class AreaResource extends Resource
             'view' => Pages\ViewArea::route('/{record}'),
         ];
     }
+
 }

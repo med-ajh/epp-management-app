@@ -1,4 +1,6 @@
 <?php
+
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,5 +50,18 @@ class Inventory extends Model
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    /**
+     * Boot method for the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Update the status based on quantity before saving the model
+        static::saving(function ($inventory) {
+            $inventory->status = $inventory->quantity > 0 ? 'Available' : 'Not Available';
+        });
     }
 }
