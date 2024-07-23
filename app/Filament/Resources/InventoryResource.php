@@ -25,6 +25,11 @@ class InventoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
 
+    protected static ?string $navigationGroup = 'EPP Management';
+    protected static ?string $navigationLabel = 'Inventory';
+
+
+
     public static function form(Form $form): Form
     {
         return $form

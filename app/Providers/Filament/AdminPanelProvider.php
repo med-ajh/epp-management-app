@@ -22,6 +22,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+
         return $panel
             ->default()
             ->id('admin')
@@ -31,9 +32,20 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile()
+            ->brandName('TE Connectivity')
+            ->brandLogo(asset('images/te.png'))
+            ->brandLogoHeight('4rem')
+            ->favicon(asset('images/logo.jpg'))
+            // Path to your logo image
             ->colors([
-                'primary' => Color::Amber,
-            ])
+                'danger' => Color::Rose,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'primary' => '#E98301', // Custom color
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
+
+                ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

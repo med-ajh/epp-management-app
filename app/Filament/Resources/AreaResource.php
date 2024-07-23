@@ -16,6 +16,7 @@ class AreaResource extends Resource
     protected static ?string $model = Area::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map-pin'; // Example of an alternative icon
+    protected static ?string $navigationGroup = 'TE Management';
 
     public static function form(Forms\Form $form): Forms\Form
     {
